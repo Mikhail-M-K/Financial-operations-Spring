@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sights
+    username: root
+    driver-class-name: org.postgresql.Driver
+    password: 123
+  sql:
+    init:
+      platform: postgres
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgresSQL10Dialect
