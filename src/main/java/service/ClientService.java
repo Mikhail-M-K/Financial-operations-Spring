@@ -1,12 +1,11 @@
 package service;
 
-import model.Transaction;
+import model.TypeOrder;
 import model.dto.CashOrderDto;
 import model.dto.ClientAccountDto;
 import model.dto.ClientDto;
 import model.dto.TransactionDto;
 
-import java.rmi.NoSuchObjectException;
 import java.util.List;
 
 public interface ClientService {
@@ -20,4 +19,6 @@ public interface ClientService {
 
 
     List<CashOrderDto> readCashOrders(Long id);
+
+    void createCashOrder(TypeOrder typeOperation, int numberAccount, double sum, String secretWord);
 }

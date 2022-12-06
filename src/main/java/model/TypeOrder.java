@@ -1,9 +1,16 @@
 package model;
 
 public enum TypeOrder {
-    REFILL, WITHDRAWAL;
+    REFILL("Пополнение"), WITHDRAWAL("Снятие");
 
-    private TypeOrder(){
+    private final String title;
 
+    TypeOrder(String title) {
+        this.title = title;
     }
+
+    public String getTitle() {
+        return title;
+    }
+
 }

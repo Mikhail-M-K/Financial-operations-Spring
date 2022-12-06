@@ -3,6 +3,7 @@ package model.dto;
 import model.ClientAccount;
 import model.TypeOrder;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class CashOrderDto {
@@ -15,9 +16,9 @@ public class CashOrderDto {
 
     private ClientAccount clientAccount;
 
-    private double executionResult;
+    private String executionResult;
 
-    private Date dataCreate;
+    private LocalDate dataCreate;
 
     public CashOrderDto() {
     }
@@ -54,19 +55,19 @@ public class CashOrderDto {
         this.clientAccount = clientAccount;
     }
 
-    public double getExecutionResult() {
+    public String getExecutionResult() {
         return executionResult;
     }
 
-    public void setExecutionResult(double executionResult) {
+    public void setExecutionResult(String executionResult) {
         this.executionResult = executionResult;
     }
 
-    public Date getDataCreate() {
+    public LocalDate getDataCreate() {
         return dataCreate;
     }
 
-    public void setDataCreate(Date dataCreate) {
+    public void setDataCreate(LocalDate dataCreate) {
         this.dataCreate = dataCreate;
     }
 }

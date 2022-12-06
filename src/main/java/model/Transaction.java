@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -13,7 +14,7 @@ public class Transaction {
     private Long id;
 
     @Column(name="date_of_creation")
-    private Date dateOfCreation;
+    private LocalDate dateOfCreation;
 
     @Column(name="sum")
     private double sum;
@@ -56,11 +57,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public Date getDateOfCreation() {
+    public LocalDate getDateOfCreation() {
         return dateOfCreation;
     }
 
-    public void setDateOfCreation(Date dateOfCreation) {
+    public void setDateOfCreation(LocalDate dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
 

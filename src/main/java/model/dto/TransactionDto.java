@@ -5,13 +5,14 @@ import model.Client;
 import model.ClientAccount;
 import model.TypeTransaction;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 public class TransactionDto {
 
     private Long id;
 
-    private Date dateOfCreation;
+    private LocalDate dateOfCreation;
 
     private double sum;
 
@@ -36,11 +37,11 @@ public class TransactionDto {
         this.id = id;
     }
 
-    public Date getDateOfCreation() {
+    public LocalDate getDateOfCreation() {
         return dateOfCreation;
     }
 
-    public void setDateOfCreation(Date dateOfCreation) {
+    public void setDateOfCreation(LocalDate dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
 

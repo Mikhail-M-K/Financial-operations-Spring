@@ -1,12 +1,13 @@
 package controller;
 
+import model.CashOrder;
 import model.Transaction;
+import model.TypeOrder;
 import model.dto.CashOrderDto;
 import model.dto.ClientAccountDto;
 import model.dto.ClientDto;
 import model.dto.TransactionDto;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import service.ClientService;
 
 import java.util.List;
@@ -41,5 +42,14 @@ public class ClientController {
     @GetMapping(value="/client/accounts/cashorders/{id}")
     public List<CashOrderDto> readCashOrders(@PathVariable(name="id") Long id) {
         return clientService.readCashOrders(id);
+    }
+
+    @PostMapping(value="/cashorders")
+    public void createCashOrder(@RequestParam TypeOrder typeOperation,
+                                @RequestParam int numberAccount,
+                                @RequestParam double sum,
+                                @RequestParam String secretWord) {
+
+        clientService.createCashOrder(typeOperation, numberAccount, sum, secretWord);
     }
 }

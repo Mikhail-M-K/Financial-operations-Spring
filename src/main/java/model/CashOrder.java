@@ -1,6 +1,7 @@
 package model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -25,10 +26,10 @@ public class CashOrder {
     private ClientAccount clientAccount;
 
     @Column(name="execution_result")
-    private double executionResult;
+    private String executionResult;
 
     @Column(name="data_create")
-    private Date dataCreate;
+    private LocalDate dataCreate;
 
     public CashOrder() {
     }
@@ -66,19 +67,19 @@ public class CashOrder {
         this.clientAccount = clientAccount;
     }
 
-    public double getExecutionResult() {
+    public String getExecutionResult() {
         return executionResult;
     }
 
-    public void setExecutionResult(double executionResult) {
+    public void setExecutionResult(String executionResult) {
         this.executionResult = executionResult;
     }
 
-    public Date getDataCreate() {
+    public LocalDate getDataCreate() {
         return dataCreate;
     }
 
-    public void setDataCreate(Date dataCreate) {
+    public void setDataCreate(LocalDate dataCreate) {
         this.dataCreate = dataCreate;
     }
 }

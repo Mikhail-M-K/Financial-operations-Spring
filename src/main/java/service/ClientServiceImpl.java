@@ -1,21 +1,23 @@
 package service;
 
 import exceptions.NoSuchObjectException;
-import model.CashOrder;
-import model.Client;
-import model.ClientAccount;
-import model.Transaction;
+import model.*;
 import model.dto.CashOrderDto;
 import model.dto.ClientAccountDto;
 import model.dto.ClientDto;
 import model.dto.TransactionDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import repos.CashOrderRepo;
 import repos.ClientAccountRepo;
 import repos.ClientRepo;
+import repos.TransactionRepo;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.time.LocalDate.now;
 
 public class ClientServiceImpl implements ClientService{
 
@@ -23,11 +25,17 @@ public class ClientServiceImpl implements ClientService{
 
     private final ClientAccountRepo clientAccountRepo;
 
+    private final CashOrderRepo cashOrderRepo;
+
+    private final TransactionRepo transactionRepo;
+
     private PasswordEncoder passwordEncoder;
 
-    public ClientServiceImpl(ClientRepo clientRepo, ClientAccountRepo clientAccountRepo) {
+    public ClientServiceImpl(ClientRepo clientRepo, ClientAccountRepo clientAccountRepo, CashOrderRepo cashOrderRepo, TransactionRepo transactionRepo) {
         this.clientRepo = clientRepo;
         this.clientAccountRepo = clientAccountRepo;
+        this.cashOrderRepo = cashOrderRepo;
+        this.transactionRepo = transactionRepo;
     }
 
     @Transactional
@@ -50,7 +58,7 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public List<ClientAccountDto> readAccount(Long id) {
         Client client = clientRepo.findById(id)
-                .orElseThrow(() -> new NoSuchObjectException("There is no client account with ID = " + id + " in Database"));
+                .orElseThrow(() -> new NoSuchObjectException("There is no client with ID = " + id + " in Database"));
        return client.getClientAccount()
                .stream()
                .map(this::convertAccountList)
@@ -76,6 +84,45 @@ public class ClientServiceImpl implements ClientService{
                 .map(this::convertCashOrderList)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void createCashOrder(TypeOrder typeOperation, int numberAccount, double sum, String secretWord) {
+        switch (typeOperation) {
+            case REFILL:
+                Transaction transaction = new Transaction();
+                CashOrder cashOrder = new CashOrder();
+                LocalDate date = LocalDate.now();
+                Long idCash;
+                ClientAccount clientAccount = clientAccountRepo.findClientAccountByAccountNumber(numberAccount);
+                clientAccount.setSum(clientAccount.getSum() + sum);
+                cashOrder.setType(typeOperation);
+                cashOrder.setSumTransaction(sum);
+                cashOrder.setClientAccount(clientAccount);
+                cashOrder.setExecutionResult("OK");
+                cashOrder.setDataCreate(date);
+                idCash = cashOrderRepo.save(cashOrder).getId();
+                transaction.setType(TypeTransaction.REFILL);
+                transaction.setDateOfCreation(date);
+                transaction.setSum(sum);
+                transaction.setClientAccount(clientAccount);
+                transaction.setCashOrder(cashOrderRepo.getReferenceById(idCash));
+                transaction.setResultTransaction("OK");
+                transactionRepo.save(transaction);
+                clientAccountRepo.save(clientAccount);
+                break;
+            case WITHDRAWAL:
+                break;
+        }
+    }
+
+    /*@Override
+    public void createCashOrder(CashOrderDto cashOrderDto) {
+    ClientAccount clientAccount = clientAccountRepo.getReferenceById(cashOrderDto.getId());
+    CashOrder cashOrderCrt = cashOrderDtoToCashOrder(cashOrderDto);
+    cashOrderCrt.setClientAccount(clientAccount);
+    cashOrderRepo.save(cashOrderCrt);
+    }*/
+
 
 
     private ClientDto convertToClientDTO(Client client) {
@@ -118,5 +165,15 @@ public class ClientServiceImpl implements ClientService{
         cashOrderDto.setExecutionResult(cashOrder.getExecutionResult());
         cashOrderDto.setDataCreate(cashOrder.getDataCreate());
         return cashOrderDto;
+    }
+
+    private CashOrder cashOrderDtoToCashOrder(CashOrderDto cashOrderDto) {
+        CashOrder cashOrderCrt = new CashOrder();
+        cashOrderCrt.setType(cashOrderDto.getType());
+        cashOrderCrt.setSumTransaction(cashOrderDto.getSumTransaction());
+        cashOrderCrt.setExecutionResult(cashOrderDto.getExecutionResult());
+        cashOrderCrt.setDataCreate(cashOrderDto.getDataCreate());
+        return cashOrderCrt;
+
     }
 }
