@@ -93,6 +93,7 @@ public class ClientServiceImpl implements ClientService{
         LocalDate date = LocalDate.now();
         Long idCash;
         ClientAccount clientAccount = clientAccountRepo.findClientAccountByAccountNumber(numberAccount);
+
         switch (typeOperation) {
             case REFILL:
                 clientAccount.setSum(clientAccount.getSum() + sum);
