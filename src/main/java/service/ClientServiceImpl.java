@@ -15,6 +15,7 @@ import repos.TransactionRepo;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.time.LocalDate.now;
@@ -87,13 +88,13 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public void createCashOrder(TypeOrder typeOperation, int numberAccount, double sum, String secretWord) {
+        Transaction transaction = new Transaction();
+        CashOrder cashOrder = new CashOrder();
+        LocalDate date = LocalDate.now();
+        Long idCash;
+        ClientAccount clientAccount = clientAccountRepo.findClientAccountByAccountNumber(numberAccount);
         switch (typeOperation) {
             case REFILL:
-                Transaction transaction = new Transaction();
-                CashOrder cashOrder = new CashOrder();
-                LocalDate date = LocalDate.now();
-                Long idCash;
-                ClientAccount clientAccount = clientAccountRepo.findClientAccountByAccountNumber(numberAccount);
                 clientAccount.setSum(clientAccount.getSum() + sum);
                 cashOrder.setType(typeOperation);
                 cashOrder.setSumTransaction(sum);
@@ -111,6 +112,31 @@ public class ClientServiceImpl implements ClientService{
                 clientAccountRepo.save(clientAccount);
                 break;
             case WITHDRAWAL:
+                cashOrder.setType(typeOperation);
+                if(Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)) {
+                    if(clientAccount.getSum() - sum >= 0) {
+                        cashOrder.setExecutionResult("OK");
+                        clientAccount.setSum(clientAccount.getSum() - sum);
+                        clientAccountRepo.save(clientAccount);
+                        transaction.setResultTransaction("OK");
+                    } else {
+                        cashOrder.setExecutionResult("Недостаточно средств");
+                        transaction.setResultTransaction("Недостаточно средств");
+                    }
+                } else {
+                    cashOrder.setExecutionResult("Неверное секретно слово");
+                    transaction.setResultTransaction("Неверное секретно слово");
+                }
+                cashOrder.setSumTransaction(sum);
+                cashOrder.setClientAccount(clientAccount);
+                cashOrder.setDataCreate(date);
+                idCash = cashOrderRepo.save(cashOrder).getId();
+                transaction.setType(TypeTransaction.WITHDRAWAL);
+                transaction.setDateOfCreation(date);
+                transaction.setSum(sum);
+                transaction.setClientAccount(clientAccount);
+                transaction.setCashOrder(cashOrderRepo.getReferenceById(idCash));
+                transactionRepo.save(transaction);
                 break;
         }
     }
