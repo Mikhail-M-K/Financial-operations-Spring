@@ -126,7 +126,8 @@ public class ClientServiceImpl implements ClientService{
             case WITHDRAWAL:
                 cashOrder.setType(typeOperation);
                 if (checkAccount) {
-                    if(Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)) {
+                    //if(Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)) {
+                    if(Objects.equals(clientAccount.getClient().getSecretWord(), passwordEncoder.encode(secretWord))) {
                         if(clientAccount.getSum() - sum >= 0) {
                             cashOrder.setExecutionResult("OK");
                             clientAccount.setSum(clientAccount.getSum() - sum);
@@ -178,7 +179,8 @@ public class ClientServiceImpl implements ClientService{
         checkOneAccount = clientAccount != null;
         checkTwoAccount = clientTwoAccount != null;
         if (checkOneAccount && checkTwoAccount && clientAccount == clientTwoAccount) {
-            if (Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)){
+            //if (Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)){
+            if (Objects.equals(clientAccount.getClient().getSecretWord(), passwordEncoder.encode(secretWord))){
                 if(clientAccount.getSum() - sum >= 0) {
                     clientAccount.setSum(clientAccount.getSum() - sum);
                     clientTwoAccount.setSum(clientTwoAccount.getSum() + sum);
@@ -253,7 +255,8 @@ public class ClientServiceImpl implements ClientService{
         checkOneAccount = clientAccount != null;
         checkTwoAccount = clientTwoAccount != null;
         if (checkOneAccount && checkTwoAccount) {
-            if (Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)) {
+            //if (Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)) {
+            if (Objects.equals(clientAccount.getClient().getSecretWord(), passwordEncoder.encode(secretWord))) {
                 if (clientAccount.getSum() - sum >= 0) {
                     clientAccount.setSum(clientAccount.getSum() - sum);
                     clientTwoAccount.setSum(clientTwoAccount.getSum() + sum);
