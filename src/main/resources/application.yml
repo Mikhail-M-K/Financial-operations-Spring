@@ -1,7 +1,7 @@
 spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
-    enabled: false
+    enabled: true
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/finpro
@@ -14,5 +14,4 @@ spring:
       database: postgresql
       show-sql: true
       hibernate:
-        ddl-auto: update
-      database-platform: org.hibernate.dialect.PostgresSQL10Dialect
+        ddl-auto: create
