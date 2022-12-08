@@ -1,6 +1,9 @@
 package com.example.finoper.controller;
 
+import com.example.finoper.model.Client;
 import com.example.finoper.model.dto.*;
+import com.example.finoper.repos.ClientAccountRepo;
+import com.example.finoper.repos.ClientRepo;
 import com.example.finoper.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,10 +13,16 @@ import java.util.List;
 @RestController
 public class ClientController {
     private final ClientService clientService;
+    private final ClientRepo clientRepo;
+    private final ClientAccountRepo clientAccountRepo;
 
     @Autowired
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService,
+                            ClientRepo clientRepo,
+                            ClientAccountRepo clientAccountRepo) {
         this.clientService = clientService;
+        this.clientRepo = clientRepo;
+        this.clientAccountRepo = clientAccountRepo;
     }
 
     @GetMapping(value="/clients")
@@ -59,5 +68,17 @@ public class ClientController {
 
         clientService.createTransactionalTransfer(transferRequestDto);
     }
+
+    @PostMapping(value="/client")
+    public void create(@RequestBody Client client) {
+
+        clientService.create(client);
+    }
+
+    @PostMapping(value="/clientaccount")
+    public void createClientAccount(@RequestBody ClientAccountRequestDto clientAccountRequestDto) {
+        clientService.createClientAccount(clientAccountRequestDto);
+    }
+
 
 }

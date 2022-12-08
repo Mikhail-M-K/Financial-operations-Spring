@@ -181,27 +181,30 @@ public class ClientServiceImpl implements ClientService{
                 .orElse(new ClientAccount());
         checkOneAccount = clientAccount.getClient() != null;
         checkTwoAccount = clientTwoAccount.getClient() != null;
-        if (checkOneAccount && checkTwoAccount && clientAccount == clientTwoAccount) {
-            //if (Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)){
-            if (Objects.equals(clientAccount.getClient().getSecretWord(), passwordEncoder.encode(secretWord))){
-                if(clientAccount.getSum() - sum >= 0) {
-                    clientAccount.setSum(clientAccount.getSum() - sum);
-                    clientTwoAccount.setSum(clientTwoAccount.getSum() + sum);
-                    clientAccountRepo.save(clientAccount);
-                    clientAccountRepo.save(clientTwoAccount);
-                    transaction.setResultTransaction("OK");
+        if (checkOneAccount && checkTwoAccount && Objects.equals(clientAccount.getClient().getId(), clientTwoAccount.getClient().getId())) {
+            if (oneAccount != twoAccount) {
+                if (passwordEncoder.matches(secretWord, clientAccount.getClient().getSecretWord())) {
+                    if (clientAccount.getSum() - sum >= 0) {
+                        clientAccount.setSum(clientAccount.getSum() - sum);
+                        clientTwoAccount.setSum(clientTwoAccount.getSum() + sum);
+                        clientAccountRepo.save(clientAccount);
+                        clientAccountRepo.save(clientTwoAccount);
+                        transaction.setResultTransaction("OK");
+                    } else {
+                        transaction.setResultTransaction("Недостаточно средств");
+                    }
                 } else {
-                    transaction.setResultTransaction("Недостаточно средств");
+                    transaction.setResultTransaction("Неверное секретное слово");
                 }
+                transaction.setClientAccount(clientAccount);
+                transaction.setClientOrder(clientTwoAccount);
             } else {
-                transaction.setResultTransaction("Неверное секретное слово");
+                transaction.setResultTransaction("Номера счетов совпадают");
             }
-            transaction.setClientAccount(clientAccount);
-            transaction.setClientOrder(clientTwoAccount);
 
-        } else if (checkOneAccount){
+        } else if (!checkOneAccount){
             transaction.setResultTransaction("Данный номер счета: " + oneAccount + " отсутствует в базе данных");
-        } else if (checkTwoAccount) {
+        } else if (!checkTwoAccount) {
             transaction.setResultTransaction("Данный номер счета: " + twoAccount + " отсутствует в базе данных");
         } else {
             transaction.setResultTransaction("Данные счета: "+ oneAccount + ", " + twoAccount +" не принадлежат одному пользователю");
@@ -231,27 +234,32 @@ public class ClientServiceImpl implements ClientService{
         checkOneAccount = clientAccount.getClient() != null;
         checkTwoAccount = clientTwoAccount.getClient() != null;
         if (checkOneAccount && checkTwoAccount) {
-            //if (Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)) {
-            if (Objects.equals(clientAccount.getClient().getSecretWord(), passwordEncoder.encode(secretWord))) {
-                if (clientAccount.getSum() - sum >= 0) {
-                    clientAccount.setSum(clientAccount.getSum() - sum);
-                    clientTwoAccount.setSum(clientTwoAccount.getSum() + sum);
-                    clientAccountRepo.save(clientAccount);
-                    clientAccountRepo.save(clientTwoAccount);
-                    transaction.setResultTransaction("OK");
+            if (oneAccount != twoAccount) {
+                if (passwordEncoder.matches(secretWord, clientAccount.getClient().getSecretWord())) {
+                    if (clientAccount.getSum() - sum >= 0) {
+                        clientAccount.setSum(clientAccount.getSum() - sum);
+                        clientTwoAccount.setSum(clientTwoAccount.getSum() + sum);
+                        clientAccountRepo.save(clientAccount);
+                        clientAccountRepo.save(clientTwoAccount);
+                        transaction.setResultTransaction("OK");
+                    } else {
+                        transaction.setResultTransaction("Недостаточно средств");
+                    }
                 } else {
-                    transaction.setResultTransaction("Недостаточно средств");
+                    transaction.setResultTransaction("Неверное секретное слово");
                 }
-            } else {
-                transaction.setResultTransaction("Неверное секретное слово");
+                transaction.setClientAccount(clientAccount);
+                transaction.setClientOrder(clientTwoAccount);
+            }else {
+                transaction.setResultTransaction("Номера счетов совпадают");
             }
-            transaction.setClientAccount(clientAccount);
-            transaction.setClientOrder(clientTwoAccount);
 
-        } else if (checkOneAccount) {
+        } else if (!checkOneAccount) {
             transaction.setResultTransaction("Данный номер счета: " + oneAccount + " отсутствует в базе данных");
-        } else {
+        } else if (!checkTwoAccount) {
             transaction.setResultTransaction("Данный номер счета: " + twoAccount + " отсутствует в базе данных");
+        } else {
+            transaction.setResultTransaction("Данные счета: "+ oneAccount + ", " + twoAccount +" отсутствуют в базе данных");
         }
         transaction.setDateOfCreation(date);
         transaction.setSum(sum);
@@ -259,6 +267,22 @@ public class ClientServiceImpl implements ClientService{
         transactionRepo.save(transaction);
     }
 
+    @Override
+    public void create(Client client) {
+        client.setSecretWord(passwordEncoder.encode(client.getSecretWord()));
+        clientRepo.save(client);
+    }
+
+    @Override
+    public void createClientAccount(ClientAccountRequestDto clientAccountRequestDto) {
+        ClientAccount clientAccount = new ClientAccount();
+        clientAccount.setAccountNumber(clientAccountRequestDto.getAccountNumber());
+        clientAccount.setSum(clientAccountRequestDto.getSum());
+        clientAccount.setClient(clientRepo.findById(clientAccountRequestDto.getIdClient()).get());
+        clientAccount.setTypeAccount(clientAccountRequestDto.getTypeAccount());
+        clientAccount.setOpeningDate(LocalDateTime.now());
+        clientAccountRepo.save(clientAccount);
+    }
 
 
     private ClientDto convertToClientDTO(Client client) {
@@ -301,15 +325,5 @@ public class ClientServiceImpl implements ClientService{
         cashOrderDto.setExecutionResult(cashOrder.getExecutionResult());
         cashOrderDto.setDataCreate(cashOrder.getDataCreate());
         return cashOrderDto;
-    }
-
-    private CashOrder cashOrderDtoToCashOrder(CashOrderDto cashOrderDto) {
-        CashOrder cashOrderCrt = new CashOrder();
-        cashOrderCrt.setType(cashOrderDto.getType());
-        cashOrderCrt.setSumTransaction(cashOrderDto.getSumTransaction());
-        cashOrderCrt.setExecutionResult(cashOrderDto.getExecutionResult());
-        cashOrderCrt.setDataCreate(cashOrderDto.getDataCreate());
-        return cashOrderCrt;
-
     }
 }

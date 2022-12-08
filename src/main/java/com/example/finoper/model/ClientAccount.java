@@ -17,7 +17,7 @@ public class ClientAccount {
     @JoinColumn(name="clients_id", nullable = false)
     private Client client;
 
-    @Column(name="account_number")
+    @Column(name="account_number", unique = true)
     private int accountNumber;
 
     @Column(name="sum")

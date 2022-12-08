@@ -1,5 +1,6 @@
 package com.example.finoper.service;
 
+import com.example.finoper.model.Client;
 import com.example.finoper.model.dto.*;
 
 import java.util.List;
@@ -21,4 +22,8 @@ public interface ClientService {
     void createTransactionalTransferOfOneUser(TransferOfOneUserRequestDto oneUserRequestDto);
 
     void createTransactionalTransfer(TransactionalTransferRequestDto transferRequestDto);
+
+    void create(Client client);
+
+    void createClientAccount(ClientAccountRequestDto clientAccountRequestDto);
 }
