@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name="clients")
 public class Client {
     @Id
     @Column(name = "id")

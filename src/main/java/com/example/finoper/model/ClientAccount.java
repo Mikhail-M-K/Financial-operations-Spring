@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="client_account")
+@Table(name="client_accounts")
 public class ClientAccount {
     @Id
     @Column(name="id")

@@ -1,18 +1,18 @@
 spring:
   liquibase:
-    enabled: true
     change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: false
   datasource:
-    url: jdbc:postgresql://localhost:5432/finoper
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/finpro
     username: root
-    driver-class-name: org.postgresql.Driver
     password: 123
   sql:
-    init:
-      platform: postgres
+      init:
+        platform: postgres
   jpa:
-    database: postgresql
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-    database-platform: org.hibernate.dialect.PostgresSQL10Dialect
+      database: postgresql
+      show-sql: true
+      hibernate:
+        ddl-auto: update
+      database-platform: org.hibernate.dialect.PostgresSQL10Dialect
