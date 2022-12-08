@@ -3,7 +3,7 @@ package com.example.finoper.model.dto;
 import com.example.finoper.model.ClientAccount;
 import com.example.finoper.model.TypeOrder;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class CashOrderDto {
 
@@ -17,7 +17,7 @@ public class CashOrderDto {
 
     private String executionResult;
 
-    private LocalDate dataCreate;
+    private LocalDateTime dataCreate;
 
     public CashOrderDto() {
     }
@@ -62,11 +62,11 @@ public class CashOrderDto {
         this.executionResult = executionResult;
     }
 
-    public LocalDate getDataCreate() {
+    public LocalDateTime getDataCreate() {
         return dataCreate;
     }
 
-    public void setDataCreate(LocalDate dataCreate) {
+    public void setDataCreate(LocalDateTime dataCreate) {
         this.dataCreate = dataCreate;
     }
 }

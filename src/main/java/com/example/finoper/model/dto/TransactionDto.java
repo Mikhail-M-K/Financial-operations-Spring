@@ -5,13 +5,13 @@ import com.example.finoper.model.Client;
 import com.example.finoper.model.ClientAccount;
 import com.example.finoper.model.TypeTransaction;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class TransactionDto {
 
     private Long id;
 
-    private LocalDate dateOfCreation;
+    private LocalDateTime dateOfCreation;
 
     private double sum;
 
@@ -36,11 +36,11 @@ public class TransactionDto {
         this.id = id;
     }
 
-    public LocalDate getDateOfCreation() {
+    public LocalDateTime getDateOfCreation() {
         return dateOfCreation;
     }
 
-    public void setDateOfCreation(LocalDate dateOfCreation) {
+    public void setDateOfCreation(LocalDateTime dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
 

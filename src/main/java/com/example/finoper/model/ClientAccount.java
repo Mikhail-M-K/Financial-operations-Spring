@@ -1,7 +1,7 @@
 package com.example.finoper.model;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -27,10 +27,10 @@ public class ClientAccount {
     private String typeAccount;
 
     @Column(name="opening_date")
-    private Date openingDate;
+    private LocalDateTime openingDate;
 
     @Column(name="validity_period")
-    private Date validityPeriod;
+    private LocalDateTime validityPeriod;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientAccount")
     private List<Transaction> transactionsList;
@@ -82,19 +82,19 @@ public class ClientAccount {
         this.typeAccount = typeAccount;
     }
 
-    public Date getOpeningDate() {
+    public LocalDateTime getOpeningDate() {
         return openingDate;
     }
 
-    public void setOpeningDate(Date openingDate) {
+    public void setOpeningDate(LocalDateTime openingDate) {
         this.openingDate = openingDate;
     }
 
-    public Date getValidityPeriod() {
+    public LocalDateTime getValidityPeriod() {
         return validityPeriod;
     }
 
-    public void setValidityPeriod(Date validityPeriod) {
+    public void setValidityPeriod(LocalDateTime validityPeriod) {
         this.validityPeriod = validityPeriod;
     }
 

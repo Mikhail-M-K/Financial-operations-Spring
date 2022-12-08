@@ -1,13 +1,9 @@
 package com.example.finoper.controller;
 
-import com.example.finoper.model.TypeOrder;
-import com.example.finoper.model.dto.CashOrderDto;
-import com.example.finoper.model.dto.ClientAccountDto;
-import com.example.finoper.model.dto.ClientDto;
-import com.example.finoper.model.dto.TransactionDto;
+import com.example.finoper.model.dto.*;
+import com.example.finoper.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.example.finoper.service.ClientService;
 
 import java.util.List;
 
@@ -46,32 +42,22 @@ public class ClientController {
     }
 
     @PostMapping(value="/cashorders")
-    public void createCashOrder(@RequestParam TypeOrder typeOperation,
-                                @RequestParam int numberAccount,
-                                @RequestParam double sum,
-                                @RequestParam String secretWord) {
-
-        clientService.createCashOrder(typeOperation, numberAccount, sum, secretWord);
+    public void createCashOrder(@RequestBody CashOrderRequestDto cashOrderRequestDto) {
+        clientService.createCashOrder(cashOrderRequestDto);
     }
 
     @PostMapping(value="/transfer/oneuser")
     public void createTransactionalTransferOfOneUser(
-                                @RequestBody@RequestParam int oneAccount,
-                                @RequestBody int twoAccount,
-                                @RequestBody double sum,
-                                @RequestBody String secretWord) {
+                                @RequestBody TransferOfOneUserRequestDto oneUserRequestDto) {
 
-        clientService.createTransactionalTransferOfOneUser(oneAccount, twoAccount, sum, secretWord);
+        clientService.createTransactionalTransferOfOneUser(oneUserRequestDto);
     }
 
     @PostMapping(value="/transfer")
     public void createTransactionalTransfer(
-            @RequestBody int oneAccount,
-            @RequestBody int twoAccount,
-            @RequestBody double sum,
-            @RequestBody String secretWord) {
+            @RequestBody TransactionalTransferRequestDto transferRequestDto) {
 
-        clientService.createTransactionalTransfer(oneAccount, twoAccount, sum, secretWord);
+        clientService.createTransactionalTransfer(transferRequestDto);
     }
 
 }

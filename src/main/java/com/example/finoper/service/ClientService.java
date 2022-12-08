@@ -1,10 +1,6 @@
 package com.example.finoper.service;
 
-import com.example.finoper.model.TypeOrder;
-import com.example.finoper.model.dto.CashOrderDto;
-import com.example.finoper.model.dto.ClientAccountDto;
-import com.example.finoper.model.dto.ClientDto;
-import com.example.finoper.model.dto.TransactionDto;
+import com.example.finoper.model.dto.*;
 
 import java.util.List;
 
@@ -20,9 +16,9 @@ public interface ClientService {
 
     List<CashOrderDto> readCashOrders(Long id);
 
-    void createCashOrder(TypeOrder typeOperation, int numberAccount, double sum, String secretWord);
+    void createCashOrder(CashOrderRequestDto cashOrderRequestDto);
 
-    void createTransactionalTransferOfOneUser(int oneAccount, int twoAccount, double sum, String secretWord);
+    void createTransactionalTransferOfOneUser(TransferOfOneUserRequestDto oneUserRequestDto);
 
-    void createTransactionalTransfer(int oneAccount, int twoAccount, double sum, String secretWord);
+    void createTransactionalTransfer(TransactionalTransferRequestDto transferRequestDto);
 }

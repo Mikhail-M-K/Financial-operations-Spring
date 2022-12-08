@@ -1,7 +1,7 @@
 package com.example.finoper.model;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="transactions")
@@ -13,7 +13,7 @@ public class Transaction {
     private Long id;
 
     @Column(name="date_of_creation")
-    private LocalDate dateOfCreation;
+    private LocalDateTime dateOfCreation;
 
     @Column(name="sum")
     private double sum;
@@ -23,15 +23,15 @@ public class Transaction {
     private TypeTransaction type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="client_account_id", nullable = false)
+    @JoinColumn(name="client_account_id")
     private ClientAccount clientAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_cash_order", nullable = false)
+    @JoinColumn(name="id_cash_order")
     private CashOrder cashOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_client_account_transfer", nullable = false)
+    @JoinColumn(name="id_client_account_transfer")
     private ClientAccount clientOrder;
 
     @Column(name="result_transaction")
@@ -56,11 +56,11 @@ public class Transaction {
         this.id = id;
     }
 
-    public LocalDate getDateOfCreation() {
+    public LocalDateTime getDateOfCreation() {
         return dateOfCreation;
     }
 
-    public void setDateOfCreation(LocalDate dateOfCreation) {
+    public void setDateOfCreation(LocalDateTime dateOfCreation) {
         this.dateOfCreation = dateOfCreation;
     }
 

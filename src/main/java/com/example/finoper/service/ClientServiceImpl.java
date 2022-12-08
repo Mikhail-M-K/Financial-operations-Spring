@@ -2,19 +2,16 @@ package com.example.finoper.service;
 
 import com.example.finoper.exceptions.NoSuchObjectException;
 import com.example.finoper.model.*;
-import com.example.finoper.model.dto.CashOrderDto;
-import com.example.finoper.model.dto.ClientAccountDto;
-import com.example.finoper.model.dto.ClientDto;
-import com.example.finoper.model.dto.TransactionDto;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.example.finoper.model.dto.*;
 import com.example.finoper.repos.CashOrderRepo;
 import com.example.finoper.repos.ClientAccountRepo;
 import com.example.finoper.repos.ClientRepo;
 import com.example.finoper.repos.TransactionRepo;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -91,15 +88,17 @@ public class ClientServiceImpl implements ClientService{
 
     @Transactional(noRollbackFor = NoSuchObjectException.class)
     @Override
-    public void createCashOrder(TypeOrder typeOperation, int numberAccount, double sum, String secretWord) {
+    public void createCashOrder(CashOrderRequestDto cashOrderRequestDto){
+        TypeOrder typeOperation = cashOrderRequestDto.getTypeOperation();
+        int numberAccount = cashOrderRequestDto.getNumberAccount();
+        double sum = cashOrderRequestDto.getSum();
+        String secretWord = cashOrderRequestDto.getSecretWord();
         Transaction transaction = new Transaction();
         CashOrder cashOrder = new CashOrder();
-        LocalDate date = LocalDate.now();
-        Long idCash;
+        LocalDateTime date = LocalDateTime.now();
         boolean checkAccount;
-        ClientAccount clientAccount = clientAccountRepo.findClientAccountByAccountNumber(numberAccount)
-                        .orElseThrow(() -> new NoSuchObjectException("There is no client account with number account = " + numberAccount + " in Database"));
-        checkAccount = clientAccount != null;
+        ClientAccount clientAccount = clientAccountRepo.findClientAccountByAccountNumber(numberAccount).orElse(new ClientAccount());
+        checkAccount = clientAccount.getClient() != null;
         switch (typeOperation) {
             case REFILL:
                 if (checkAccount) {
@@ -116,11 +115,11 @@ public class ClientServiceImpl implements ClientService{
                 cashOrder.setType(typeOperation);
                 cashOrder.setSumTransaction(sum);
                 cashOrder.setDataCreate(date);
-                idCash = cashOrderRepo.save(cashOrder).getId();
+                cashOrder = cashOrderRepo.save(cashOrder);
                 transaction.setType(TypeTransaction.REFILL);
                 transaction.setDateOfCreation(date);
                 transaction.setSum(sum);
-                transaction.setCashOrder(cashOrderRepo.getReferenceById(idCash));
+                transaction.setCashOrder(cashOrder);
                 transactionRepo.save(transaction);
                 break;
             case WITHDRAWAL:
@@ -154,12 +153,12 @@ public class ClientServiceImpl implements ClientService{
                 cashOrder.setSumTransaction(sum);
                 //cashOrder.setClientAccount(clientAccount);
                 cashOrder.setDataCreate(date);
-                idCash = cashOrderRepo.save(cashOrder).getId();
+                cashOrder = cashOrderRepo.save(cashOrder);
                 transaction.setType(TypeTransaction.WITHDRAWAL);
                 transaction.setDateOfCreation(date);
                 transaction.setSum(sum);
                 //transaction.setClientAccount(clientAccount);
-                transaction.setCashOrder(cashOrderRepo.getReferenceById(idCash));
+                transaction.setCashOrder(cashOrder);
                 transactionRepo.save(transaction);
                 break;
         }
@@ -168,16 +167,20 @@ public class ClientServiceImpl implements ClientService{
 
     @Transactional(noRollbackFor = NoSuchObjectException.class)
     @Override
-    public void createTransactionalTransferOfOneUser(int oneAccount, int twoAccount, double sum, String secretWord) {
+    public void createTransactionalTransferOfOneUser(TransferOfOneUserRequestDto oneUserRequestDto) {
+        int oneAccount = oneUserRequestDto.getOneAccount();
+        int twoAccount = oneUserRequestDto.getTwoAccount();
+        double sum = oneUserRequestDto.getSum();
+        String secretWord = oneUserRequestDto.getSecretWord();
         Transaction transaction = new Transaction();
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
         boolean checkSecretWord, checkOneAccount, checkTwoAccount;
         ClientAccount clientAccount = clientAccountRepo.findClientAccountByAccountNumber(oneAccount)
-                .orElseThrow(() -> new NoSuchObjectException("There is no client account with number account = " + oneAccount + " in Database"));
+                .orElse(new ClientAccount());
         ClientAccount clientTwoAccount = clientAccountRepo.findClientAccountByAccountNumber(twoAccount)
-                .orElseThrow(() -> new NoSuchObjectException("There is no client account with number account = " + twoAccount + " in Database"));
-        checkOneAccount = clientAccount != null;
-        checkTwoAccount = clientTwoAccount != null;
+                .orElse(new ClientAccount());
+        checkOneAccount = clientAccount.getClient() != null;
+        checkTwoAccount = clientTwoAccount.getClient() != null;
         if (checkOneAccount && checkTwoAccount && clientAccount == clientTwoAccount) {
             //if (Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)){
             if (Objects.equals(clientAccount.getClient().getSecretWord(), passwordEncoder.encode(secretWord))){
@@ -207,53 +210,26 @@ public class ClientServiceImpl implements ClientService{
         transaction.setSum(sum);
         transaction.setType(TypeTransaction.TRANSFER);
         transactionRepo.save(transaction);
-        /*checkOneAccount = clientAccount != null;
-        checkOneAccount ? checkTwoAccount = clientAccount.getClient().getClientAccount().equals(twoAccount) : ; //проверка второго счета
-        checkSecretWord = ; //проверка секретного слова
 
-        if (checkAccounts && checkSecretWord){
-            //transaction.setDateOfCreation(date);
-            //transaction.setSum(sum);
-            if(clientAccount.getSum() - sum >= 0) {
-                clientAccount.setSum(clientAccount.getSum() - sum);
-                clientTwoAccount.setSum(clientTwoAccount.getSum() + sum);
-                clientAccountRepo.save(clientAccount);
-                clientAccountRepo.save(clientTwoAccount);
-                transaction.setResultTransaction("OK");
-            } else {
-                transaction.setResultTransaction("Недостаточно средств");
-            }
-            transaction.setType(TypeTransaction.TRANSFER);
-            transaction.setClientAccount(clientAccount);
-            transaction.setClientOrder(clientTwoAccount);
-            transactionRepo.save(transaction);
-        } else {
-            if (!checkAccounts && !checkSecretWord) {
-                transaction.setResultTransaction("Неверные номер счета для перевода и секретное слово");
-            } else if (!checkAccounts && checkSecretWord){
-                transaction.setResultTransaction("Неверный номер счета для перевода");
-            } else {
-                transaction.setResultTransaction("Неверное секретное слово");
-            }
-            transaction.setType(TypeTransaction.TRANSFER);
-            transaction.setClientAccount(clientAccount);
-            transactionRepo.save(transaction);
-        }*/
     }
 
 
     @Transactional(noRollbackFor = NoSuchObjectException.class)
     @Override
-    public void createTransactionalTransfer(int oneAccount, int twoAccount, double sum, String secretWord) {
+    public void createTransactionalTransfer(TransactionalTransferRequestDto transferRequestDto) {
+        int oneAccount = transferRequestDto.getOneAccount();
+        int twoAccount = transferRequestDto.getTwoAccount();
+        double sum = transferRequestDto.getSum();
+        String secretWord = transferRequestDto.getSecretWord();
         Transaction transaction = new Transaction();
-        LocalDate date = LocalDate.now();
+        LocalDateTime date = LocalDateTime.now();
         boolean checkSecretWord, checkOneAccount, checkTwoAccount;
         ClientAccount clientAccount = clientAccountRepo.findClientAccountByAccountNumber(oneAccount)
-                .orElseThrow(() -> new NoSuchObjectException("There is no client account with number account = " + oneAccount + " in Database"));
+                .orElse(new ClientAccount());
         ClientAccount clientTwoAccount = clientAccountRepo.findClientAccountByAccountNumber(twoAccount)
-                .orElseThrow(() -> new NoSuchObjectException("There is no client account with number account = " + twoAccount + " in Database"));
-        checkOneAccount = clientAccount != null;
-        checkTwoAccount = clientTwoAccount != null;
+                .orElse(new ClientAccount());
+        checkOneAccount = clientAccount.getClient() != null;
+        checkTwoAccount = clientTwoAccount.getClient() != null;
         if (checkOneAccount && checkTwoAccount) {
             //if (Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)) {
             if (Objects.equals(clientAccount.getClient().getSecretWord(), passwordEncoder.encode(secretWord))) {

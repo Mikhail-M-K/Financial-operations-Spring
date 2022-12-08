@@ -2,7 +2,7 @@ package com.example.finoper.model.dto;
 
 import com.example.finoper.model.Client;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class ClientAccountDto {
 
@@ -16,9 +16,9 @@ public class ClientAccountDto {
 
     private String typeAccount;
 
-    private Date openingDate;
+    private LocalDateTime openingDate;
 
-    private Date validityPeriod;
+    private LocalDateTime validityPeriod;
 
     public ClientAccountDto() {
     }
@@ -63,19 +63,19 @@ public class ClientAccountDto {
         this.typeAccount = typeAccount;
     }
 
-    public Date getOpeningDate() {
+    public LocalDateTime getOpeningDate() {
         return openingDate;
     }
 
-    public void setOpeningDate(Date openingDate) {
+    public void setOpeningDate(LocalDateTime openingDate) {
         this.openingDate = openingDate;
     }
 
-    public Date getValidityPeriod() {
+    public LocalDateTime getValidityPeriod() {
         return validityPeriod;
     }
 
-    public void setValidityPeriod(Date validityPeriod) {
+    public void setValidityPeriod(LocalDateTime validityPeriod) {
         this.validityPeriod = validityPeriod;
     }
 }

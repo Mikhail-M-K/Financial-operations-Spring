@@ -15,4 +15,6 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder(8);
     }
 
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+
 }
