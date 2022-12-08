@@ -1,8 +1,7 @@
-package model;
+package com.example.finoper.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name="transactions")
@@ -24,7 +23,7 @@ public class Transaction {
     private TypeTransaction type;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="client_ account_id", nullable = false)
+    @JoinColumn(name="client_account_id", nullable = false)
     private ClientAccount clientAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,7 +31,7 @@ public class Transaction {
     private CashOrder cashOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_client_account", nullable = false)
+    @JoinColumn(name="id_client_account_transfer", nullable = false)
     private ClientAccount clientOrder;
 
     @Column(name="result_transaction")

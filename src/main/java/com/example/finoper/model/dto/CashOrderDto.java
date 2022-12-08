@@ -1,10 +1,9 @@
-package model.dto;
+package com.example.finoper.model.dto;
 
-import model.ClientAccount;
-import model.TypeOrder;
+import com.example.finoper.model.ClientAccount;
+import com.example.finoper.model.TypeOrder;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class CashOrderDto {
 

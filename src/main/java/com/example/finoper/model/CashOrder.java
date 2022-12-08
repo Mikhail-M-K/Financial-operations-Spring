@@ -1,8 +1,7 @@
-package model;
+package com.example.finoper.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table

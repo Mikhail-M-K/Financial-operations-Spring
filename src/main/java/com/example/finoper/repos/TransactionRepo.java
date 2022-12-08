@@ -1,6 +1,6 @@
-package repos;
+package com.example.finoper.repos;
 
-import model.Transaction;
+import com.example.finoper.model.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TransactionRepo extends JpaRepository <Transaction, Long> {

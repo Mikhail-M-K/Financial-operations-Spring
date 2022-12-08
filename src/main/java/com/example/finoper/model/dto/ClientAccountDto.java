@@ -1,8 +1,7 @@
-package model.dto;
+package com.example.finoper.model.dto;
 
-import model.Client;
+import com.example.finoper.model.Client;
 
-import javax.persistence.*;
 import java.util.Date;
 
 public class ClientAccountDto {

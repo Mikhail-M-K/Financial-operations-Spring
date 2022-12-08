@@ -1,33 +1,24 @@
-package model;
+package com.example.finoper.model.dto;
 
-import javax.persistence.*;
+import com.example.finoper.model.ClientAccount;
+
 import java.util.List;
 
-@Entity
-@Table
-public class Client {
-    @Id
-    @Column(name = "id")
-    @SequenceGenerator(name = "clientsIdSeq", sequenceName = "clients_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clientsIdSeq")
+public class ClientDto {
+
     private Long id;
 
-    @Column(name = "second_name")
     private String secondName;
 
-    @Column(name = "name")
-    private Integer name;
+    private String name;
 
-    @Column(name = "patronymic")
-    private Boolean patronymic;
+    private String patronymic;
 
-    @Column(name = "secret_word")
     private String secretWord;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
     private List<ClientAccount> clientAccount;
 
-    public Client() {
+    public ClientDto() {
     }
 
     public Long getId() {
@@ -42,24 +33,23 @@ public class Client {
         return secondName;
     }
 
-
     public void setSecondName(String secondName) {
         this.secondName = secondName;
     }
 
-    public Integer getName() {
+    public String getName() {
         return name;
     }
 
-    public void setName(Integer name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public Boolean getPatronymic() {
+    public String getPatronymic() {
         return patronymic;
     }
 
-    public void setPatronymic(Boolean patronymic) {
+    public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;
     }
 

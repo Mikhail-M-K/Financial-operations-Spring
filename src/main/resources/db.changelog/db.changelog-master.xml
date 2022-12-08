@@ -1,0 +1,102 @@
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="create-table-clients" author="root">
+        <createTable tableName="clients">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="second_name" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="patronymic" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="secret_word" type="text"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-table-client-accounts" author="root">
+        <createTable tableName="client_accounts">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="clients_id" type="bigint">
+                <constraints foreignKeyName="client_accounts_id_clients_id" references="clients(id)" nullable="false"/>
+            </column>
+            <column name="sum" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type_account" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="opening_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="validity_period" type="date"/>
+        </createTable>
+    </changeSet>
+
+
+
+
+    <changeSet id="create-table-cash-order" author="root">
+        <createTable tableName="cash_orders">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="type_account" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sum_order" type="double">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="id_client_account" type="text">
+                <constraints foreignKeyName="cash_orders_id_client_accounts_id" references="client_accounts(id)"/>
+            </column>
+            <column name="execution_result" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="data_create" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+
+
+    <changeSet id="create-table-transactions" author="root">
+        <createTable tableName="transactions">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="date_of_creation" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="sum" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type_transaction" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="client_ account_id" type="bigint">
+                <constraints foreignKeyName="transactions_id_client_accounts_id" references="clients(id)"/>
+            </column>
+            <column name="id_cash_order" type="bigint">
+                <constraints foreignKeyName="transactions_id_cash_orders_id" references="cash_orders(id)"/>
+            </column>
+            <column name="id_client_account_transfer" type="bigint">
+                <constraints foreignKeyName="transactions_id_client_accounts_transfer_id" references="clients(id)"/>
+            </column>
+            <column name="execution_result" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

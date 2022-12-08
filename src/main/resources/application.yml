@@ -1,6 +1,9 @@
 spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
   datasource:
-    url: jdbc:postgresql://localhost:5432/sights
+    url: jdbc:postgresql://localhost:5432/finoper
     username: root
     driver-class-name: org.postgresql.Driver
     password: 123

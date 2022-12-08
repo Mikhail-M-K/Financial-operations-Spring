@@ -1,4 +1,4 @@
-package model;
+package com.example.finoper.model;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,7 +14,7 @@ public class ClientAccount {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id", nullable = false)
+    @JoinColumn(name="clients_id", nullable = false)
     private Client client;
 
     @Column(name="account_number")

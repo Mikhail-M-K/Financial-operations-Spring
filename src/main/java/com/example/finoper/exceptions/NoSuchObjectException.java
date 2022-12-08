@@ -1,4 +1,4 @@
-package exceptions;
+package com.example.finoper.exceptions;
 
 public class NoSuchObjectException extends RuntimeException{
 

@@ -1,20 +1,21 @@
-package controller;
+package com.example.finoper.controller;
 
-import model.CashOrder;
-import model.Transaction;
-import model.TypeOrder;
-import model.dto.CashOrderDto;
-import model.dto.ClientAccountDto;
-import model.dto.ClientDto;
-import model.dto.TransactionDto;
+import com.example.finoper.model.TypeOrder;
+import com.example.finoper.model.dto.CashOrderDto;
+import com.example.finoper.model.dto.ClientAccountDto;
+import com.example.finoper.model.dto.ClientDto;
+import com.example.finoper.model.dto.TransactionDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import service.ClientService;
+import com.example.finoper.service.ClientService;
 
 import java.util.List;
 
+@RestController
 public class ClientController {
     private final ClientService clientService;
 
+    @Autowired
     public ClientController(ClientService clientService) {
         this.clientService = clientService;
     }
@@ -52,4 +53,25 @@ public class ClientController {
 
         clientService.createCashOrder(typeOperation, numberAccount, sum, secretWord);
     }
+
+    @PostMapping(value="/transfer/oneuser")
+    public void createTransactionalTransferOfOneUser(
+                                @RequestBody@RequestParam int oneAccount,
+                                @RequestBody int twoAccount,
+                                @RequestBody double sum,
+                                @RequestBody String secretWord) {
+
+        clientService.createTransactionalTransferOfOneUser(oneAccount, twoAccount, sum, secretWord);
+    }
+
+    @PostMapping(value="/transfer")
+    public void createTransactionalTransfer(
+            @RequestBody int oneAccount,
+            @RequestBody int twoAccount,
+            @RequestBody double sum,
+            @RequestBody String secretWord) {
+
+        clientService.createTransactionalTransfer(oneAccount, twoAccount, sum, secretWord);
+    }
+
 }

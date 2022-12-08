@@ -1,6 +1,6 @@
-package repos;
+package com.example.finoper.repos;
 
-import model.CashOrder;
+import com.example.finoper.model.CashOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
     public interface CashOrderRepo extends JpaRepository<CashOrder, Long> {

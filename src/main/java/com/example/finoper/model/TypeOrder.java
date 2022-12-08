@@ -1,4 +1,4 @@
-package model;
+package com.example.finoper.model;
 
 public enum TypeOrder {
     REFILL("Пополнение"), WITHDRAWAL("Снятие");

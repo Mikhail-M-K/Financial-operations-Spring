@@ -1,12 +1,11 @@
-package model.dto;
+package com.example.finoper.model.dto;
 
-import model.CashOrder;
-import model.Client;
-import model.ClientAccount;
-import model.TypeTransaction;
+import com.example.finoper.model.CashOrder;
+import com.example.finoper.model.Client;
+import com.example.finoper.model.ClientAccount;
+import com.example.finoper.model.TypeTransaction;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class TransactionDto {
 
