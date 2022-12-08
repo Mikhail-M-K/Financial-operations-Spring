@@ -1,6 +1,5 @@
 package com.example.finoper.service;
 
-import com.example.finoper.model.Client;
 import com.example.finoper.model.dto.*;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public interface ClientService {
 
     void createTransactionalTransfer(TransactionalTransferRequestDto transferRequestDto);
 
-    void create(Client client);
+    void create(ClientDto clientDto);
 
     void createClientAccount(ClientAccountRequestDto clientAccountRequestDto);
 }

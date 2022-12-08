@@ -202,12 +202,12 @@ public class ClientServiceImpl implements ClientService{
                 transaction.setResultTransaction("Номера счетов совпадают");
             }
 
-        } else if (!checkOneAccount){
-            transaction.setResultTransaction("Данный номер счета: " + oneAccount + " отсутствует в базе данных");
+        } else if (!checkOneAccount && !checkTwoAccount){
+            transaction.setResultTransaction("Данные счета: "+ oneAccount + ", " + twoAccount +" не принадлежат одному пользователю");
         } else if (!checkTwoAccount) {
             transaction.setResultTransaction("Данный номер счета: " + twoAccount + " отсутствует в базе данных");
         } else {
-            transaction.setResultTransaction("Данные счета: "+ oneAccount + ", " + twoAccount +" не принадлежат одному пользователю");
+            transaction.setResultTransaction("Данный номер счета: " + oneAccount + " отсутствует в базе данных");
         }
         transaction.setDateOfCreation(date);
         transaction.setSum(sum);
@@ -254,12 +254,12 @@ public class ClientServiceImpl implements ClientService{
                 transaction.setResultTransaction("Номера счетов совпадают");
             }
 
-        } else if (!checkOneAccount) {
-            transaction.setResultTransaction("Данный номер счета: " + oneAccount + " отсутствует в базе данных");
+        } else if (!checkOneAccount && !checkTwoAccount) {
+            transaction.setResultTransaction("Данные счета: "+ oneAccount + ", " + twoAccount +" отсутствуют в базе данных");
         } else if (!checkTwoAccount) {
             transaction.setResultTransaction("Данный номер счета: " + twoAccount + " отсутствует в базе данных");
         } else {
-            transaction.setResultTransaction("Данные счета: "+ oneAccount + ", " + twoAccount +" отсутствуют в базе данных");
+            transaction.setResultTransaction("Данный номер счета: " + oneAccount + " отсутствует в базе данных");
         }
         transaction.setDateOfCreation(date);
         transaction.setSum(sum);
@@ -268,20 +268,32 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
-    public void create(Client client) {
-        client.setSecretWord(passwordEncoder.encode(client.getSecretWord()));
-        clientRepo.save(client);
+    public void create(ClientDto clientDto) {
+        clientRepo.save(clientDtoToClient(clientDto));
     }
 
     @Override
     public void createClientAccount(ClientAccountRequestDto clientAccountRequestDto) {
+        clientAccountRepo.save(clientAccountDtoToClientAccount(clientAccountRequestDto));
+    }
+
+    private Client clientDtoToClient (ClientDto clientDto) {
+        Client client = new Client();
+        client.setSecondName(clientDto.getSecondName());
+        client.setName(clientDto.getName());
+        client.setPatronymic(clientDto.getPatronymic());
+        client.setSecretWord(passwordEncoder.encode(clientDto.getSecretWord()));
+        return client;
+    }
+
+    private ClientAccount clientAccountDtoToClientAccount (ClientAccountRequestDto clientAccountRequestDto) {
         ClientAccount clientAccount = new ClientAccount();
         clientAccount.setAccountNumber(clientAccountRequestDto.getAccountNumber());
         clientAccount.setSum(clientAccountRequestDto.getSum());
         clientAccount.setClient(clientRepo.findById(clientAccountRequestDto.getIdClient()).get());
         clientAccount.setTypeAccount(clientAccountRequestDto.getTypeAccount());
         clientAccount.setOpeningDate(LocalDateTime.now());
-        clientAccountRepo.save(clientAccount);
+        return clientAccount;
     }
 
 

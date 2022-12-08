@@ -1,6 +1,5 @@
 package com.example.finoper.controller;
 
-import com.example.finoper.model.Client;
 import com.example.finoper.model.dto.*;
 import com.example.finoper.repos.ClientAccountRepo;
 import com.example.finoper.repos.ClientRepo;
@@ -70,9 +69,9 @@ public class ClientController {
     }
 
     @PostMapping(value="/client")
-    public void create(@RequestBody Client client) {
+    public void create(@RequestBody ClientDto clientDto) {
 
-        clientService.create(client);
+        clientService.create(clientDto);
     }
 
     @PostMapping(value="/clientaccount")
