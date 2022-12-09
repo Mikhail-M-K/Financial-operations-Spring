@@ -11,16 +11,11 @@ public interface ClientService {
 
     List<ClientAccountDto> readAccount(Long id);
 
-    List<TransactionDto> readTransactionsAccount(Long id);
-
 
     List<CashOrderDto> readCashOrders(Long id);
 
     void createCashOrder(CashOrderRequestDto cashOrderRequestDto);
 
-    void createTransactionalTransferOfOneUser(TransferOfOneUserRequestDto oneUserRequestDto);
-
-    void createTransactionalTransfer(TransactionalTransferRequestDto transferRequestDto);
 
     void create(ClientDto clientDto);
 

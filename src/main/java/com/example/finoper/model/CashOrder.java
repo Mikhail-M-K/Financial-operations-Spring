@@ -14,11 +14,11 @@ public class CashOrder {
     private Long id;
 
     @Column(name="type_order")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private TypeOrder type;
 
     @Column(name="sum_order")
-    private double sumTransaction;
+    private Double sumTransaction;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id_client_account")
@@ -27,8 +27,8 @@ public class CashOrder {
     @Column(name="execution_result")
     private String executionResult;
 
-    @Column(name="data_create")
-    private LocalDateTime dataCreate;
+    @Column(name="date_create")
+    private LocalDateTime dateCreate;
 
     public CashOrder() {
     }
@@ -50,11 +50,11 @@ public class CashOrder {
         this.type = type;
     }
 
-    public double getSumTransaction() {
+    public Double getSumTransaction() {
         return sumTransaction;
     }
 
-    public void setSumTransaction(double sumTransaction) {
+    public void setSumTransaction(Double sumTransaction) {
         this.sumTransaction = sumTransaction;
     }
 
@@ -74,11 +74,11 @@ public class CashOrder {
         this.executionResult = executionResult;
     }
 
-    public LocalDateTime getDataCreate() {
-        return dataCreate;
+    public LocalDateTime getDateCreate() {
+        return dateCreate;
     }
 
-    public void setDataCreate(LocalDateTime dataCreate) {
-        this.dataCreate = dataCreate;
+    public void setDateCreate(LocalDateTime dateCreate) {
+        this.dateCreate = dateCreate;
     }
 }

@@ -3,7 +3,7 @@ package com.example.finoper.model.dto;
 public class TransferOfOneUserRequestDto {
     private int oneAccount;
     private int twoAccount;
-    private double sum;
+    private Double sum;
     private String secretWord;
 
     public TransferOfOneUserRequestDto() {
@@ -17,7 +17,7 @@ public class TransferOfOneUserRequestDto {
         return twoAccount;
     }
 
-    public double getSum() {
+    public Double getSum() {
         return sum;
     }
 

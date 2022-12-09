@@ -21,10 +21,11 @@ public class ClientAccount {
     private int accountNumber;
 
     @Column(name="sum")
-    private double sum;
+    private Double sum;
 
     @Column(name="type_account")
-    private String typeAccount;
+    @Enumerated(EnumType.STRING)
+    private TypeAccount typeAccount;
 
     @Column(name="opening_date")
     private LocalDateTime openingDate;
@@ -66,19 +67,19 @@ public class ClientAccount {
         this.accountNumber = accountNumber;
     }
 
-    public double getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 
-    public String getTypeAccount() {
+    public TypeAccount getTypeAccount() {
         return typeAccount;
     }
 
-    public void setTypeAccount(String typeAccount) {
+    public void setTypeAccount(TypeAccount typeAccount) {
         this.typeAccount = typeAccount;
     }
 

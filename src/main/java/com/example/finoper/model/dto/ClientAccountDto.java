@@ -1,6 +1,7 @@
 package com.example.finoper.model.dto;
 
 import com.example.finoper.model.Client;
+import com.example.finoper.model.TypeAccount;
 
 import java.time.LocalDateTime;
 
@@ -12,9 +13,9 @@ public class ClientAccountDto {
 
     private int accountNumber;
 
-    private double sum;
+    private Double sum;
 
-    private String typeAccount;
+    private TypeAccount typeAccount;
 
     private LocalDateTime openingDate;
 
@@ -47,19 +48,19 @@ public class ClientAccountDto {
         this.accountNumber = accountNumber;
     }
 
-    public double getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 
-    public String getTypeAccount() {
+    public TypeAccount getTypeAccount() {
         return typeAccount;
     }
 
-    public void setTypeAccount(String typeAccount) {
+    public void setTypeAccount(TypeAccount typeAccount) {
         this.typeAccount = typeAccount;
     }
 

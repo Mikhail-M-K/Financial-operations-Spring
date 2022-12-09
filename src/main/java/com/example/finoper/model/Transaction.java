@@ -16,10 +16,10 @@ public class Transaction {
     private LocalDateTime dateOfCreation;
 
     @Column(name="sum")
-    private double sum;
+    private Double sum;
 
     @Column(name="type_transaction")
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private TypeTransaction type;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -64,11 +64,11 @@ public class Transaction {
         this.dateOfCreation = dateOfCreation;
     }
 
-    public double getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 

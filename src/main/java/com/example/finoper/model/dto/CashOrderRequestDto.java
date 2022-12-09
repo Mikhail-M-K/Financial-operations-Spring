@@ -4,8 +4,8 @@ import com.example.finoper.model.TypeOrder;
 
 public class CashOrderRequestDto {
     private TypeOrder typeOperation;
-    private int numberAccount;
-    private double sum;
+    private Integer numberAccount;
+    private Double sum;
     private String secretWord;
 
     public CashOrderRequestDto() {
@@ -15,11 +15,11 @@ public class CashOrderRequestDto {
         return typeOperation;
     }
 
-    public int getNumberAccount() {
+    public Integer getNumberAccount() {
         return numberAccount;
     }
 
-    public double getSum() {
+    public Double getSum() {
         return sum;
     }
 

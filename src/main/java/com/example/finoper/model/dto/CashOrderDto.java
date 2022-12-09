@@ -11,13 +11,13 @@ public class CashOrderDto {
 
     private TypeOrder type;
 
-    private double sumTransaction;
+    private Double sumTransaction;
 
     private ClientAccount clientAccount;
 
     private String executionResult;
 
-    private LocalDateTime dataCreate;
+    private LocalDateTime dateCreate;
 
     public CashOrderDto() {
     }
@@ -38,11 +38,11 @@ public class CashOrderDto {
         this.type = type;
     }
 
-    public double getSumTransaction() {
+    public Double getSumTransaction() {
         return sumTransaction;
     }
 
-    public void setSumTransaction(double sumTransaction) {
+    public void setSumTransaction(Double sumTransaction) {
         this.sumTransaction = sumTransaction;
     }
 
@@ -62,11 +62,11 @@ public class CashOrderDto {
         this.executionResult = executionResult;
     }
 
-    public LocalDateTime getDataCreate() {
-        return dataCreate;
+    public LocalDateTime getDateCreate() {
+        return dateCreate;
     }
 
-    public void setDataCreate(LocalDateTime dataCreate) {
-        this.dataCreate = dataCreate;
+    public void setDateCreate(LocalDateTime dateCreate) {
+        this.dateCreate = dateCreate;
     }
 }

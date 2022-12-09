@@ -5,7 +5,7 @@ public class TransactionalTransferRequestDto {
 
     private int twoAccount;
 
-    private double sum;
+    private Double sum;
 
     private String secretWord;
 
@@ -20,7 +20,7 @@ public class TransactionalTransferRequestDto {
         return twoAccount;
     }
 
-    public double getSum() {
+    public Double getSum() {
         return sum;
     }
 

@@ -13,7 +13,7 @@ public class TransactionDto {
 
     private LocalDateTime dateOfCreation;
 
-    private double sum;
+    private Double sum;
 
     private TypeTransaction type;
 
@@ -44,11 +44,11 @@ public class TransactionDto {
         this.dateOfCreation = dateOfCreation;
     }
 
-    public double getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 
