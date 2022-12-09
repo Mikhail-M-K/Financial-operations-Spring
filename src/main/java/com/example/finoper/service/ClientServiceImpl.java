@@ -128,8 +128,7 @@ public class ClientServiceImpl implements ClientService{
             case WITHDRAWAL:
                 cashOrder.setType(typeOperation);
                 if (checkAccount) {
-                    //if(Objects.equals(passwordEncoder.encode(clientAccount.getClient().getSecretWord()), secretWord)) {
-                    if(Objects.equals(clientAccount.getClient().getSecretWord(), passwordEncoder.encode(secretWord))) {
+                    if(passwordEncoder.matches(secretWord, clientAccount.getClient().getSecretWord())) {
                         if(clientAccount.getSum() - sum >= 0) {
                             cashOrder.setExecutionResult("OK");
                             clientAccount.setSum(clientAccount.getSum() - sum);
@@ -146,8 +145,6 @@ public class ClientServiceImpl implements ClientService{
                     //clientAccount.setSum(clientAccount.getSum() + sum);
                     cashOrder.setClientAccount(clientAccount);
                     transaction.setClientAccount(clientAccount);
-                    cashOrder.setExecutionResult("OK");
-                    transaction.setResultTransaction("OK");
                     clientAccountRepo.save(clientAccount);
                 } else {
                     cashOrder.setExecutionResult("Данный номер счета: " + numberAccount + " отсутствует в базе данных");
