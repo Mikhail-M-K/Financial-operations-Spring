@@ -11,11 +11,6 @@ public interface ClientService {
 
     List<ClientAccountDto> readAccount(Long id);
 
-
-    List<CashOrderDto> readCashOrders(Long id);
-
-    void createCashOrder(CashOrderRequestDto cashOrderRequestDto);
-
     void create(ClientCreateDto clientCreateDto);
 
     void createClientAccount(ClientAccountCreateDto clientAccountCreateDto);

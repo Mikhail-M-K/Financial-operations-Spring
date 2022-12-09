@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public class Transaction {
     @Id
     @Column(name="id")
-    @SequenceGenerator(name="clientsIdSeq", sequenceName="clients_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @SequenceGenerator(name="transactionsIdSeq", sequenceName="transactions_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy= GenerationType.AUTO, generator = "transactions_accountIdSeq")
     private Long id;
 
     @Column(name="date_of_creation")

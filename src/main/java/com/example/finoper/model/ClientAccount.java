@@ -9,8 +9,8 @@ import java.util.Set;
 public class ClientAccount {
     @Id
     @Column(name="id")
-    @SequenceGenerator(name="clientsIdSeq", sequenceName="clients_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @SequenceGenerator(name="clients_accountIdSeq", sequenceName="clients_account_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy= GenerationType.AUTO, generator = "clients_accountIdSeq")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

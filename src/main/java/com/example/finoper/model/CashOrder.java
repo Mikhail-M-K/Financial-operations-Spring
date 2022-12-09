@@ -9,8 +9,8 @@ public class CashOrder {
 
     @Id
     @Column(name = "id")
-    @SequenceGenerator(name = "clientsIdSeq", sequenceName = "clients_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clientsIdSeq")
+    @SequenceGenerator(name = "cash_orderIdSeq", sequenceName = "cash_order_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cash_orderIdSeq")
     private Long id;
 
     @Column(name="type_order")

@@ -56,10 +56,10 @@ public class TransactionalServiceImpl implements TransactionalService{
                 .orElse(null);
         ClientAccount secondClientAccount = clientAccountRepo.findClientAccountByAccountNumber(secondNumberAccount)
                 .orElse(null);
-        boolean checkOneAccount = firstClientAccount != null;
-        boolean checkTwoAccount = secondClientAccount != null;
+        boolean checkFirstAccount = firstClientAccount != null;
+        boolean checkSecondAccount = secondClientAccount != null;
 
-        if (checkOneAccount && checkTwoAccount && (isOneUser? Objects.equals(firstClientAccount.getClient().getId(), secondClientAccount.getClient().getId()) : true)) {
+        if (checkFirstAccount && checkSecondAccount && (isOneUser? Objects.equals(firstClientAccount.getClient().getId(), secondClientAccount.getClient().getId()) : true)) {
             System.out.println(secretWord);
             if (firstNumberAccount != secondNumberAccount) {
                 if (passwordEncoder.matches(secretWord, firstClientAccount.getClient().getSecretWord())) {
@@ -79,11 +79,11 @@ public class TransactionalServiceImpl implements TransactionalService{
                 transaction.setResultTransaction("Номера счетов совпадают");
             }
 
-        } else if (!checkTwoAccount && !checkOneAccount) {
+        } else if (!checkSecondAccount && !checkFirstAccount) {
             transaction.setResultTransaction("Данные счета: " +  firstNumberAccount + ", " + secondNumberAccount +" отсутствует в базе данных");
-        } else if (!checkTwoAccount) {
+        } else if (!checkSecondAccount) {
             transaction.setResultTransaction("Данный номер счета: " + secondNumberAccount + " отсутствует в базе данных");
-        } else if (!checkOneAccount){
+        } else if (!checkFirstAccount){
 
             transaction.setResultTransaction("Данный номер счета: " + firstNumberAccount + " отсутствует в базе данных");
         } else {
