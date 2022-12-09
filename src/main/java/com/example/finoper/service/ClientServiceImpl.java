@@ -92,7 +92,7 @@ public class ClientServiceImpl implements ClientService{
         TypeOrder typeOperation = cashOrderRequestDto.getTypeOperation();
         int numberAccount = cashOrderRequestDto.getNumberAccount();
         double sum = cashOrderRequestDto.getSum();
-        String secretWord = cashOrderRequestDto.getSecretWord();
+        String secretWord = cashOrderRequestDto.getSecretWord(), statusesTransactionAndCashOrder;
         Transaction transaction = new Transaction();
         CashOrder cashOrder = new CashOrder();
         LocalDateTime date = LocalDateTime.now();
@@ -120,7 +120,10 @@ public class ClientServiceImpl implements ClientService{
                 transaction.setDateOfCreation(date);
                 transaction.setSum(sum);
                 transaction.setCashOrder(cashOrder);
-                transactionRepo.save(transaction);
+                statusesTransactionAndCashOrder = transactionRepo.save(transaction).getResultTransaction();
+                if (!statusesTransactionAndCashOrder.equals("OK")) {
+                    throw new NoSuchObjectException(statusesTransactionAndCashOrder);
+                }
                 break;
             case WITHDRAWAL:
                 cashOrder.setType(typeOperation);
@@ -159,7 +162,10 @@ public class ClientServiceImpl implements ClientService{
                 transaction.setSum(sum);
                 //transaction.setClientAccount(clientAccount);
                 transaction.setCashOrder(cashOrder);
-                transactionRepo.save(transaction);
+                statusesTransactionAndCashOrder = transactionRepo.save(transaction).getResultTransaction();
+                if (!statusesTransactionAndCashOrder.equals("OK")) {
+                    throw new NoSuchObjectException(statusesTransactionAndCashOrder);
+                }
                 break;
         }
 
@@ -171,7 +177,7 @@ public class ClientServiceImpl implements ClientService{
         int oneAccount = oneUserRequestDto.getOneAccount();
         int twoAccount = oneUserRequestDto.getTwoAccount();
         double sum = oneUserRequestDto.getSum();
-        String secretWord = oneUserRequestDto.getSecretWord();
+        String secretWord = oneUserRequestDto.getSecretWord(), statusTransaction;
         Transaction transaction = new Transaction();
         LocalDateTime date = LocalDateTime.now();
         boolean checkSecretWord, checkOneAccount, checkTwoAccount;
@@ -202,17 +208,23 @@ public class ClientServiceImpl implements ClientService{
                 transaction.setResultTransaction("Номера счетов совпадают");
             }
 
-        } else if (!checkOneAccount && !checkTwoAccount){
-            transaction.setResultTransaction("Данные счета: "+ oneAccount + ", " + twoAccount +" не принадлежат одному пользователю");
+        } else if (!checkTwoAccount && !checkOneAccount) {
+            transaction.setResultTransaction("Данные счета: " +  oneAccount + ", " + twoAccount +" отсутствует в базе данных");
         } else if (!checkTwoAccount) {
             transaction.setResultTransaction("Данный номер счета: " + twoAccount + " отсутствует в базе данных");
-        } else {
+        } else if (!checkOneAccount){
             transaction.setResultTransaction("Данный номер счета: " + oneAccount + " отсутствует в базе данных");
+        }  else {
+            transaction.setResultTransaction("Данные счета: " + oneAccount + ", " + twoAccount +" не принадлежат одному пользователю");
         }
         transaction.setDateOfCreation(date);
         transaction.setSum(sum);
         transaction.setType(TypeTransaction.TRANSFER);
-        transactionRepo.save(transaction);
+        statusTransaction = transactionRepo.save(transaction).getResultTransaction();
+        if (!statusTransaction.equals("OK")) {
+            throw new NoSuchObjectException(statusTransaction);
+        }
+
 
     }
 
@@ -223,7 +235,7 @@ public class ClientServiceImpl implements ClientService{
         int oneAccount = transferRequestDto.getOneAccount();
         int twoAccount = transferRequestDto.getTwoAccount();
         double sum = transferRequestDto.getSum();
-        String secretWord = transferRequestDto.getSecretWord();
+        String secretWord = transferRequestDto.getSecretWord(), statusTransaction;
         Transaction transaction = new Transaction();
         LocalDateTime date = LocalDateTime.now();
         boolean checkSecretWord, checkOneAccount, checkTwoAccount;
@@ -264,7 +276,10 @@ public class ClientServiceImpl implements ClientService{
         transaction.setDateOfCreation(date);
         transaction.setSum(sum);
         transaction.setType(TypeTransaction.TRANSFER);
-        transactionRepo.save(transaction);
+        statusTransaction = transactionRepo.save(transaction).getResultTransaction();
+        if (!statusTransaction.equals("OK")) {
+            throw new NoSuchObjectException(statusTransaction);
+        }
     }
 
     @Override
