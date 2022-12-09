@@ -2,7 +2,7 @@ package com.example.finoper.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="client_accounts")
@@ -34,10 +34,10 @@ public class ClientAccount {
     private LocalDateTime validityPeriod;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientAccount")
-    private List<Transaction> transactionsList;
+    private Set<Transaction> transactions;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientAccount")
-    private List<CashOrder> cashOrderList;
+    private Set<CashOrder> cashOrder;
 
     public ClientAccount() {
     }
@@ -99,19 +99,19 @@ public class ClientAccount {
         this.validityPeriod = validityPeriod;
     }
 
-    public List<Transaction> getTransactionsList() {
-        return transactionsList;
+    public Set<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public void setTransactionsList(List<Transaction> transactionsList) {
-        this.transactionsList = transactionsList;
+    public void setTransactions(Set<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
-    public List<CashOrder> getCashOrderList() {
-        return cashOrderList;
+    public Set<CashOrder> getCashOrder() {
+        return cashOrder;
     }
 
-    public void setCashOrderList(List<CashOrder> cashOrderList) {
-        this.cashOrderList = cashOrderList;
+    public void setCashOrder(Set<CashOrder> cashOrder) {
+        this.cashOrder = cashOrder;
     }
 }

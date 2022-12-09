@@ -1,13 +1,14 @@
 package com.example.finoper.model.dto;
 
+import com.example.finoper.model.Client;
 import com.example.finoper.model.TypeAccount;
 
 import java.time.LocalDateTime;
 
-public class ClientAccountDto {
+public class ClientAccountCreateDto {
 
-    private Long id;
-    private Long clientId;
+    private Client client;
+
     private int accountNumber;
 
     private Double sum;
@@ -18,16 +19,9 @@ public class ClientAccountDto {
 
     private LocalDateTime validityPeriod;
 
+    private Long clientId;
 
-    public ClientAccountDto() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public ClientAccountCreateDto() {
     }
 
     public Long getClientId() {
@@ -36,6 +30,14 @@ public class ClientAccountDto {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     public int getAccountNumber() {
@@ -78,3 +80,4 @@ public class ClientAccountDto {
         this.validityPeriod = validityPeriod;
     }
 }
+

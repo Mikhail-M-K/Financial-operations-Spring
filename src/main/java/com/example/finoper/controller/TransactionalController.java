@@ -2,7 +2,6 @@ package com.example.finoper.controller;
 
 import com.example.finoper.model.dto.TransactionDto;
 import com.example.finoper.model.dto.TransactionalTransferRequestDto;
-import com.example.finoper.model.dto.TransferOfOneUserRequestDto;
 import com.example.finoper.service.TransactionalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,16 +30,16 @@ public class TransactionalController {
     }
 
     @PostMapping(value="/transfer/oneuser")
-    public void createTransactionalTransferOfOneUser(
-            @RequestBody TransferOfOneUserRequestDto oneUserRequestDto) {
-
-        transactionalService.createTransactionalTransferOfOneUser(oneUserRequestDto);
+    public void createTransactionalTransferOneUser(
+            @RequestBody TransactionalTransferRequestDto transferRequestDto) {
+        transferRequestDto.setOneUser(true);
+        transactionalService.createTransactionalTransfer(transferRequestDto);
     }
 
     @PostMapping(value="/transfer")
     public void createTransactionalTransfer(
             @RequestBody TransactionalTransferRequestDto transferRequestDto) {
-
+        transferRequestDto.setOneUser(false);
         transactionalService.createTransactionalTransfer(transferRequestDto);
     }
 }

@@ -1,7 +1,7 @@
 package com.example.finoper.model;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="clients")
@@ -25,7 +25,7 @@ public class Client {
     private String secretWord;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
-    private List<ClientAccount> clientAccount;
+    private Set<ClientAccount> clientAccount;
 
     public Client() {
     }
@@ -71,11 +71,11 @@ public class Client {
         this.secretWord = secretWord;
     }
 
-    public List<ClientAccount> getClientAccount() {
+    public Set<ClientAccount> getClientAccount() {
         return clientAccount;
     }
 
-    public void setClientAccount(List<ClientAccount> clientAccount) {
+    public void setClientAccount(Set<ClientAccount> clientAccount) {
         this.clientAccount = clientAccount;
     }
 }

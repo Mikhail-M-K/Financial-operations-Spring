@@ -1,6 +1,6 @@
 package com.example.finoper.model.dto;
 
-public class ClientDto {
+public class ClientCreateDto {
     private Long id;
 
     private String secondName;
@@ -9,7 +9,19 @@ public class ClientDto {
 
     private String patronymic;
 
-    public ClientDto() {
+    private String secretWord;
+
+
+
+    public ClientCreateDto() {
+    }
+
+    public String getSecretWord() {
+        return secretWord;
+    }
+
+    public void setSecretWord(String secretWord) {
+        this.secretWord = secretWord;
     }
 
     public Long getId() {
@@ -43,4 +55,6 @@ public class ClientDto {
     public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;
     }
+
+
 }

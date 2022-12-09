@@ -16,8 +16,8 @@ public interface ClientService {
 
     void createCashOrder(CashOrderRequestDto cashOrderRequestDto);
 
+    void create(ClientCreateDto clientCreateDto);
 
-    void create(ClientDto clientDto);
+    void createClientAccount(ClientAccountCreateDto clientAccountCreateDto);
 
-    void createClientAccount(ClientAccountRequestDto clientAccountRequestDto);
 }

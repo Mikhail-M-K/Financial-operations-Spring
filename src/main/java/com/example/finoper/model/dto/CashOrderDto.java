@@ -1,6 +1,5 @@
 package com.example.finoper.model.dto;
 
-import com.example.finoper.model.ClientAccount;
 import com.example.finoper.model.TypeOrder;
 
 import java.time.LocalDateTime;
@@ -13,7 +12,7 @@ public class CashOrderDto {
 
     private Double sumTransaction;
 
-    private ClientAccount clientAccount;
+    private Long clientAccountId;
 
     private String executionResult;
 
@@ -46,12 +45,12 @@ public class CashOrderDto {
         this.sumTransaction = sumTransaction;
     }
 
-    public ClientAccount getClientAccount() {
-        return clientAccount;
+    public Long getClientAccountId() {
+        return clientAccountId;
     }
 
-    public void setClientAccount(ClientAccount clientAccount) {
-        this.clientAccount = clientAccount;
+    public void setClientAccountId(Long clientAccountId) {
+        this.clientAccountId = clientAccountId;
     }
 
     public String getExecutionResult() {

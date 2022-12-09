@@ -1,6 +1,9 @@
 package com.example.finoper.controller;
 
-import com.example.finoper.model.dto.*;
+import com.example.finoper.model.dto.ClientAccountCreateDto;
+import com.example.finoper.model.dto.ClientAccountDto;
+import com.example.finoper.model.dto.ClientCreateDto;
+import com.example.finoper.model.dto.ClientDto;
 import com.example.finoper.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,13 +46,13 @@ public class ClientController {
     }
 
     @PostMapping(value="/client")
-    public void create(@RequestBody ClientDto clientDto) {
-        clientService.create(clientDto);
+    public void create(@RequestBody ClientCreateDto clientCreateDto) {
+        clientService.create(clientCreateDto);
     }
 
     @PostMapping(value="/clientaccount")
-    public void createClientAccount(@RequestBody ClientAccountRequestDto clientAccountRequestDto) {
-        clientService.createClientAccount(clientAccountRequestDto);
+    public void createClientAccount(@RequestBody ClientAccountCreateDto clientAccountDto) {
+        clientService.createClientAccount(clientAccountDto);
     }
 
 }

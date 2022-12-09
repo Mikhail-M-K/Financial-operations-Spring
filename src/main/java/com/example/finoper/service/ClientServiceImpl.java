@@ -58,20 +58,19 @@ public class ClientServiceImpl implements ClientService{
     public List<ClientAccountDto> readAccount(Long id) {
         Client client = clientRepo.findById(id)
                 .orElseThrow(() -> new NoSuchObjectException("There is no client with ID = " + id + " in Database"));
+
        return client.getClientAccount()
                .stream()
                .map(this::convertAccount)
                .collect(Collectors.toList());
     }
 
-
-
     @Transactional
     @Override
     public List<CashOrderDto> readCashOrders(Long id) {
         ClientAccount clientAccountCash = clientAccountRepo.findById(id)
                 .orElseThrow(() -> new NoSuchObjectException("There is no client account with ID = " + id + " in Database"));
-        return clientAccountCash.getCashOrderList()
+        return clientAccountCash.getCashOrder()
                 .stream()
                 .map(this::convertCashOrder)
                 .collect(Collectors.toList());
@@ -83,7 +82,8 @@ public class ClientServiceImpl implements ClientService{
         TypeOrder typeOperation = cashOrderRequestDto.getTypeOperation();
         int numberAccount = cashOrderRequestDto.getNumberAccount();
         double sum = cashOrderRequestDto.getSum();
-        String secretWord = cashOrderRequestDto.getSecretWord(), statusesTransactionAndCashOrder;
+        String secretWord = cashOrderRequestDto.getSecretWord();
+        String statusesTransactionAndCashOrder ="";
         Transaction transaction = new Transaction();
         CashOrder cashOrder = new CashOrder();
         LocalDateTime date = LocalDateTime.now();
@@ -156,35 +156,38 @@ public class ClientServiceImpl implements ClientService{
 
     }
 
+    @Transactional
     @Override
-    public void create(ClientDto clientDto) {
-        clientRepo.save(clientDtoToClient(clientDto));
+    public void create(ClientCreateDto client) {
+        clientRepo.save(convertToClientDTO(client));
     }
 
-    @Override
-    public void createClientAccount(ClientAccountRequestDto clientAccountRequestDto) {
-        clientAccountRepo.save(clientAccountDtoToClientAccount(clientAccountRequestDto));
-    }
-
-    private Client clientDtoToClient (ClientDto clientDto) {
-        Client client = new Client();
-        client.setSecondName(clientDto.getSecondName());
-        client.setName(clientDto.getName());
-        client.setPatronymic(clientDto.getPatronymic());
-        client.setSecretWord(passwordEncoder.encode(clientDto.getSecretWord()));
-        return client;
-    }
-
-    private ClientAccount clientAccountDtoToClientAccount (ClientAccountRequestDto clientAccountRequestDto) {
-        ClientAccount clientAccount = new ClientAccount();
-        clientAccount.setAccountNumber(clientAccountRequestDto.getAccountNumber());
-        clientAccount.setSum(clientAccountRequestDto.getSum());
-        clientAccount.setClient(clientRepo.findById(clientAccountRequestDto.getIdClient()).get());
-        clientAccount.setTypeAccount(clientAccountRequestDto.getTypeAccount());
+    public void createClientAccount(ClientAccountCreateDto clientAccountDto) {
+        Client client = clientRepo.getReferenceById(clientAccountDto.getClientId());
+        ClientAccount clientAccount = clientAccountDtoToClientAccount(clientAccountDto);
         clientAccount.setOpeningDate(LocalDateTime.now());
+        clientAccount.setClient(client);
+        clientAccountRepo.save(clientAccount);
+    }
+
+    private ClientAccount clientAccountDtoToClientAccount(ClientAccountCreateDto clientAccountDto) {
+        ClientAccount clientAccount = new ClientAccount();
+        clientAccount.setAccountNumber(clientAccountDto.getAccountNumber());
+        clientAccount.setSum(clientAccountDto.getSum());
+        clientAccount.setTypeAccount(clientAccountDto.getTypeAccount());
+        clientAccount.setValidityPeriod(clientAccountDto.getValidityPeriod());
         return clientAccount;
     }
 
+    private Client convertToClientDTO(ClientCreateDto clientCreateDto) {
+        Client client = new Client();
+        client.setId(clientCreateDto.getId());
+        client.setSecondName(clientCreateDto.getSecondName());
+        client.setName(clientCreateDto.getName());
+        client.setPatronymic(clientCreateDto.getPatronymic());
+        client.setSecretWord(passwordEncoder.encode(clientCreateDto.getSecretWord()));
+        return client;
+    }
 
     private ClientDto convertToClientDTO(Client client) {
         ClientDto clientDto = new ClientDto();
@@ -192,7 +195,6 @@ public class ClientServiceImpl implements ClientService{
         clientDto.setSecondName(client.getSecondName());
         clientDto.setName(client.getName());
         clientDto.setPatronymic(client.getPatronymic());
-        clientDto.setSecretWord(passwordEncoder.encode(client.getSecretWord()));
         return clientDto;
     }
 
@@ -203,6 +205,8 @@ public class ClientServiceImpl implements ClientService{
         clientAccountDto.setTypeAccount(clientAccount.getTypeAccount());
         clientAccountDto.setOpeningDate(clientAccount.getOpeningDate());
         clientAccountDto.setValidityPeriod(clientAccount.getValidityPeriod());
+        clientAccountDto.setClientId(clientAccount.getClient().getId());
+        clientAccountDto.setId(clientAccount.getId());
         return clientAccountDto;
     }
 
@@ -210,9 +214,10 @@ public class ClientServiceImpl implements ClientService{
 
     private CashOrderDto convertCashOrder(CashOrder cashOrder) {
         CashOrderDto cashOrderDto = new CashOrderDto();
+        cashOrderDto.setId(cashOrder.getId());
         cashOrderDto.setType(cashOrder.getType());
         cashOrderDto.setSumTransaction(cashOrder.getSumTransaction());
-        cashOrderDto.setClientAccount(cashOrder.getClientAccount());
+        cashOrderDto.setClientAccountId(cashOrder.getClientAccount().getId());
         cashOrderDto.setExecutionResult(cashOrder.getExecutionResult());
         cashOrderDto.setDateCreate(cashOrder.getDateCreate());
         return cashOrderDto;

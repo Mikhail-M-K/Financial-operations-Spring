@@ -1,23 +1,33 @@
 package com.example.finoper.model.dto;
 
 public class TransactionalTransferRequestDto {
-    private int oneAccount;
+    private int firstNumberAccount;
 
-    private int twoAccount;
+    private int secondNumberAccount;
 
     private Double sum;
 
     private String secretWord;
 
+    private Boolean isOneUser;
+
     public TransactionalTransferRequestDto() {
     }
 
-    public int getOneAccount() {
-        return oneAccount;
+    public void setOneUser(Boolean oneUser) {
+        isOneUser = oneUser;
     }
 
-    public int getTwoAccount() {
-        return twoAccount;
+    public Boolean getOneUser() {
+        return isOneUser;
+    }
+
+    public int getFirstNumberAccount() {
+        return firstNumberAccount;
+    }
+
+    public int getSecondNumberAccount() {
+        return secondNumberAccount;
     }
 
     public Double getSum() {

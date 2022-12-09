@@ -1,7 +1,5 @@
 package com.example.finoper.model.dto;
 
-import com.example.finoper.model.CashOrder;
-import com.example.finoper.model.Client;
 import com.example.finoper.model.ClientAccount;
 import com.example.finoper.model.TypeTransaction;
 
@@ -17,11 +15,11 @@ public class TransactionDto {
 
     private TypeTransaction type;
 
-    private ClientAccount clientAccount;
+    private Long clientAccountId;
 
-    private CashOrder cashOrder;
+    private Long cashOrderId;
 
-    private Client clientOrder;
+    private Long clientOrderId;
 
     private String resultTransaction;
 
@@ -60,22 +58,6 @@ public class TransactionDto {
         this.type = type;
     }
 
-    public CashOrder getCashOrder() {
-        return cashOrder;
-    }
-
-    public void setCashOrder(CashOrder cashOrder) {
-        this.cashOrder = cashOrder;
-    }
-
-    public Client getClientOrder() {
-        return clientOrder;
-    }
-
-    public void setClientOrder(Client clientOrder) {
-        this.clientOrder = clientOrder;
-    }
-
     public String getResultTransaction() {
         return resultTransaction;
     }
@@ -87,7 +69,27 @@ public class TransactionDto {
     public void setClientAccount(ClientAccount clientAccount) {
     }
 
-    public ClientAccount getClientAccount() {
-        return clientAccount;
+    public Long getClientAccountId() {
+        return clientAccountId;
+    }
+
+    public void setClientAccountId(Long clientAccountId) {
+        this.clientAccountId = clientAccountId;
+    }
+
+    public Long getCashOrderId() {
+        return cashOrderId;
+    }
+
+    public void setCashOrderId(Long cashOrderId) {
+        this.cashOrderId = cashOrderId;
+    }
+
+    public Long getClientOrderId() {
+        return clientOrderId;
+    }
+
+    public void setClientOrderId(Long clientOrderId) {
+        this.clientOrderId = clientOrderId;
     }
 }
