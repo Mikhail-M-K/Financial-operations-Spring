@@ -21,7 +21,7 @@ public class CashOrder {
     private Double sumTransaction;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_client_account")
+    @JoinColumn(name="client_account_id")
     private ClientAccount clientAccount;
 
     @Column(name="execution_result")

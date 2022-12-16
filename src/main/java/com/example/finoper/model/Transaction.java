@@ -27,11 +27,11 @@ public class Transaction {
     private ClientAccount clientAccount;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_cash_order")
+    @JoinColumn(name="cash_order_id")
     private CashOrder cashOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="id_client_account_transfer")
+    @JoinColumn(name="client_account_transfer_id")
     private ClientAccount clientOrder;
 
     @Column(name="result_transaction")
