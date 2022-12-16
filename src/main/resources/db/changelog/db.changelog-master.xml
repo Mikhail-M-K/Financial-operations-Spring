@@ -45,7 +45,7 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="client_accounts" baseColumnNames="clients_id"
-                                 constraintName="client_accounts_clients_id_clients_id"
+                                 constraintName="fk_client_accounts_clients_id_clients_id"
                                  referencedTableName="clients" referencedColumnNames="id"/>
     </changeSet>
 
@@ -72,7 +72,7 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="cash_orders" baseColumnNames="client_account_id"
-                                 constraintName="cash_orders_client_account_id_client_accounts_id"
+                                 constraintName="fk_cash_orders_client_account_id_client_accounts_id"
                                  referencedTableName="client_accounts" referencedColumnNames="id"/>
     </changeSet>
 
@@ -92,30 +92,27 @@
             <column name="type_transaction" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="client_account_id" type="bigint">
-                <!--<constraints foreignKeyName="transactions_id_client_accounts_id" references="clients(id)"/>-->
-            </column>
-            <column name="cash_order_id" type="bigint">
-                <!--<constraints foreignKeyName="transactions_id_cash_orders_id" references="cash_orders(id)"/>-->
-            </column>
-            <column name="client_account_transfer_id" type="bigint">
-                <!--<constraints foreignKeyName="transactions_id_client_accounts_transfer_id" references="clients(id)"/>-->
-            </column>
+            <column name="client_account_id" type="bigint"/>
+
+            <column name="cash_order_id" type="bigint"/>
+
+            <column name="client_account_transfer_id" type="bigint"/>
+
             <column name="result_transaction" type="text">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
         <addForeignKeyConstraint baseTableName="transactions" baseColumnNames="client_account_id"
-                                 constraintName="transactions_client_account_id_clients_id"
+                                 constraintName="fk_transactions_client_account_id_clients_id"
                                  referencedTableName="clients" referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="transactions" baseColumnNames="cash_order_id"
-                                 constraintName="transactions_cash_order_id_cash_order_id"
+                                 constraintName="fk_transactions_cash_order_id_cash_order_id"
                                  referencedTableName="cash_orders" referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="transactions" baseColumnNames="client_account_transfer_id"
-                                 constraintName="transactions_client_account_transfer_id_clients_id"
+                                 constraintName="fk_transactions_client_account_transfer_id_clients_id"
                                  referencedTableName="clients" referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>
